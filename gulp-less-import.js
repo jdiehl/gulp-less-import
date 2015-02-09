@@ -10,21 +10,21 @@ module.exports = function (outname) {
 
   function write(file, enc, done) {
     if (file.path !== 'undefined') {
-      imports =  imports + '@import "' + path.relative(__dirname, file.path) + '";' + '\n';
+      imports =  imports + '@import "' + path.relative(process.cwd(), file.path) + '";' + '\n';
     }
     done();
   }
 
-  function flush(dobe) {
+  function flush(done) {
     /*jshint validthis:true */
 
     var newFile = new gutil.File({
-      path: __dirname + '/' + outname,
+      path: outname,
       contents: new Buffer(imports)
     });
 
     this.push(newFile);
-    dobe();
+    done();
   }
 
   return through.obj(write, flush);
